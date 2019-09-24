@@ -1,6 +1,13 @@
 from django.db import models
 from django.shortcuts import reverse
 
+from django.utils.text import slugify # для привидения юрл к нужному виду
+from time import time
+
+def gen_slug(str):
+    new_slug = slugify(str,allow_unicode=True)
+    return new_slug + '-' + str(int(time()))
+
 # Create your models here.
 
 class Post(models.Model):

@@ -72,7 +72,7 @@ class PostCreate(View): # создание/генерация вьюшки
 
     def get(self,request):
         form = PostForm()
-        return render(request, 'blog/post_create.html',context={'form':form})
+        return render(request, 'blog/post_create.html',context={'form':form})   # показ формы пользователю
 
     def post(self,request):
         bound_form = PostForm(request.POST)
