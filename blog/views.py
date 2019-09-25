@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.generic import View
 from .models import Post,Tag
 #from django.shortcuts import get_object_or_404
-from .utils import ObjectDetailMixin
+from .utils import ObjectDetailMixin, ObjectCreateMixin
 from .forms import TagForm,PostForm
 
 
@@ -68,18 +68,21 @@ class TagCreate(View):
             return redirect(new_tag) #редирект сразу по модели!
         return render(request,'blog/tag_create.html',context={'form':bound_form})
 
-class PostCreate(View): # создание/генерация вьюшки 
+class PostCreate(ObjectCreateMixin, View): # создание/генерация вьюшки 
+    form_model = PostForm
+    template = 'blog/post_create.html'
 
-    def get(self,request):
-        form = PostForm()
-        return render(request, 'blog/post_create.html',context={'form':form})   # показ формы пользователю
 
-    def post(self,request):
-        bound_form = PostForm(request.POST)
+    # def get(self,request):
+    #     form = PostForm()
+    #     return render(request, 'blog/post_create.html',context={'form':form})   # показ формы пользователю
 
-        if bound_form.is_valid():
-            new_post = bound_form.save()
-            return redirect(new_post)
-        return render(request,'blog/post_create.html',context={'form':bound_form})
+    # def post(self,request):
+    #     bound_form = PostForm(request.POST)
+
+    #     if bound_form.is_valid():
+    #         new_post = bound_form.save()
+    #         return redirect(new_post)
+    #     return render(request,'blog/post_create.html',context={'form':bound_form})
 
 
