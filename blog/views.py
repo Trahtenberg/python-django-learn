@@ -47,6 +47,7 @@ class TagDetail(ObjectDetailMixin,View):
     template = 'blog/tag_detail.html'
 
 class TagCreate(View):
+    # без добавления миксина
     # обработка запросов для создания тегов
     def get(self, request):
         # получить форму
@@ -67,6 +68,24 @@ class TagCreate(View):
 
             return redirect(new_tag) #редирект сразу по модели!
         return render(request,'blog/tag_create.html',context={'form':bound_form})
+
+class TagUpdate(View):
+
+    def get(self, request, slug):
+        tag = Tag.objects.get(slug=slug)
+        bound_form = TagForm(instance=tag)
+        return render(request,'blog/tag_update_form.html',context={'form':bound_form,'tag':tag})
+    
+    def post(self, request, slug):
+
+        tag = Tag.objects.get(slug=slug)
+        bound_form = TagForm(request.POST,instance=tag)
+
+        if bound_form.is_valid():
+            update_tag = bound_form.save()
+            return redirect(update_tag)
+        return render(request,'blog/tag_update_form.html',context={'form':bound_form,'tag':tag})
+
 
 class PostCreate(ObjectCreateMixin, View): # создание/генерация вьюшки 
     form_model = PostForm
